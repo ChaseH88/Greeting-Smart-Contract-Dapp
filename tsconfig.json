@@ -18,7 +18,8 @@
     "paths": {
       "state/*": ["state/*"],
       "types/*": ["types/*"],
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [
     "src/*"

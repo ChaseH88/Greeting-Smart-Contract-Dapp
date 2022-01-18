@@ -1,1 +1,1 @@
-export const RESET_APP_STATE: string = '@app/reset-state';
+export const SET_CONNECTED: string = '@app/set-connected';

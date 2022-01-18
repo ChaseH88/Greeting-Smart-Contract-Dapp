@@ -1,32 +1,16 @@
-export interface Account {
-  accountName: string
-  address1: string
-  address2: string
-  city: string
-  state: string
-  country: string
-  zip: string
-  businessType: string
-  website: string
-  contactName: string
-  contactEmail: string
-  contactNumber: string
-  createdDate: Date
-  accountUsers: User
+// Redux Action
+export interface Action {
+  type: string,
+  payload: any
 }
 
-export interface User {
-  firstname: string;
-  lastName: string;
-  email: string;
-  photo: string;
-  role: Role;
-  password: string;
-  resetPasswordToken: string,
-  resetPasswordExpire: Date,
-  createdAt: Date;
-}
-
-export interface Role {
-  level: number
+export interface Ethereum {
+  chainId: string
+  enable: any
+  isMetaMask: true
+  networkVersion: string
+  request: (param: { method: 'eth_requestAccounts' } | any) => any
+  selectedAddress: null | string
+  send: any
+  sendAsync: any
 }

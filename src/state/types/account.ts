@@ -1,1 +1,0 @@
-export const GET_ACCOUNT: string = '@account/get-account';

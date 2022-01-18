@@ -1,5 +1,24 @@
-# React-TypeScript-Template
-This starter template includes React, TypeScript, Webpack, Styled-Components, and Redux! This template was created by [Chase Harrison](http://thechaseharrison.com/ "Chase Harrison"). Please feel free to clone down and use for yourself. The template is ready to go out of the box. Simply run **npm i** to install the needed dependencies.
+# Dapp App
 
-- **npm start** - Starts the development server.
-- **npm build** - Builds the bundle.js file.
+*Full readme coming soon!*
+
+## **Scripts**
+
+### Compile Smart Contracts
+```shell
+npx hardhat compile
+```
+This command will compile the smart contracts and add them to the `artifcats` folder in the `src` directory.
+
+<!--
+Try running some of the following tasks:
+
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+node scripts/sample-script.js
+npx hardhat help
+``` -->

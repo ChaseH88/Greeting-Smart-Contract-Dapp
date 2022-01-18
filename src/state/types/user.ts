@@ -1,0 +1,1 @@
+export const GET_USER: string = '@user/get-user';

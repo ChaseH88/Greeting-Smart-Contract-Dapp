@@ -31,6 +31,5 @@ This command will deploy the smart contract to the blockchain on Rinkeby.
 ## Rinkeby Ethereum Test Network
 
 ### Links
-  - https://ropsten.etherscan.io/ - Testnet Explorer
-  - https://faucet.ropsten.be/ - Free Ethereum for testing.
+  - https://rinkeby.etherscan.io/address - Testnet Explorer
   - https://infura.io/ - Hosted Ethereum node cluster for testing.

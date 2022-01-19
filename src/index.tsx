@@ -16,7 +16,7 @@ import { Ethereum } from "./types/interfaces";
  * Contract Address
  */
 const greeterAddress: string = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-const tokenAddress: string = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9';
+const tokenAddress: string = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 
 declare global {
   interface Window {
@@ -26,10 +26,13 @@ declare global {
 
 const App: FC = () => {
 
+  const [ userAccount, setUserAccount ] = useState<any>(null);
   const [ userInput, setUserInput ] = useState<string>('This is a test');
   const [ greeting, setContractGreeting ] = useState<string | null>(null);
   const [ maskError, setMaskError ] = useState<string | null>(null);
   const [ userBalance, setUserBalance ] = useState<number | null>(null);
+  const [ coinsToSend, setCoinsToSend ] = useState<number>(0);
+  const [ userToSend, setUserToSend ] = useState<string>('');
 
   /**
    * Handles the state update for user input.
@@ -65,9 +68,10 @@ const App: FC = () => {
    * Prompts the user for their MetaMask account
    */
   const requestAccount = async () => {
-    await window.ethereum.request({
+    const [account] = await window.ethereum.request({
       method: 'eth_requestAccounts'
     });
+    setUserAccount(account);
   }
 
   /**
@@ -94,13 +98,24 @@ const App: FC = () => {
 
   const getBalance = async () => {
     if(typeof window.ethereum !== 'undefined') {
-      const [ account ] = await window.ethereum.request({
-        method: 'eth_requestAccounts'
-      });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
-      const balance = await contract.balanceOf(account);
+      const balance = await contract.balanceOf(userAccount);
       setUserBalance(balance.toString());
+    }
+  }
+
+  const sendTokens = async () => {
+    if(typeof window.ethereum !== 'undefined') {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(tokenAddress, Token.abi, signer);
+      const transaction = await contract.transfer(userToSend, coinsToSend);
+      console.log(transaction);
+      return;
+      transaction.wait();
+      console.log(`${coinsToSend} tokens have been sent to ${userToSend}`)
     }
   }
 
@@ -110,6 +125,9 @@ const App: FC = () => {
         Greeting Smart Contract Dapp
       </h1>
       <div>
+        <h3>
+          Fetch Greeting
+        </h3>
         <button
           onClick={fetchGreeting}
         >
@@ -118,6 +136,9 @@ const App: FC = () => {
         {greeting?.length && greeting}
       </div>
       <div>
+        <h3>
+          Set Greeting
+        </h3>
         <input
           type="text"
           name="greeting"
@@ -131,14 +152,39 @@ const App: FC = () => {
         </button>
       </div>
       <div>
+        <h3>
+          Get Balance
+        </h3>
         <button
-            onClick={getBalance}
-          >
-            Get Balance
-          </button>
-          {userBalance &&
-            <p>User Balance: {userBalance} APCH</p>
-          }
+          onClick={getBalance}
+        >
+          Get Balance
+        </button>
+        {userBalance &&
+          <p>User Balance: {userBalance} APCH</p>
+        }
+      </div>
+      <div>
+        <h3>
+          Send Tokens
+        </h3>
+        <input
+          type="number"
+          name="tokens"
+          onChange={({ target: { value } }) => setCoinsToSend(+value)}
+          value={coinsToSend}
+        />
+        <input
+          type="text"
+          name="userToSend"
+          onChange={({ target: { value } }) => setUserToSend(value)}
+          value={userToSend}
+        />
+        <button
+          onClick={sendTokens}
+        >
+          Send Tokens!
+        </button>
       </div>
       {maskError &&
         <div className="error">

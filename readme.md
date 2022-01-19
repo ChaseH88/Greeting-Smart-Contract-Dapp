@@ -16,21 +16,21 @@ npx hardhat node
 ```
 Running this command will start up the test network. It will provide 20 different addresses to work with.
 
-### Deploy Smart Contract
+### Deploy Smart Contract - Localhost
 ```shell
 npx hardhat run scripts/deploy.js --network localhost
 ```
-This command will deploy the smart contract to the blockchain.
+This command will deploy the smart contract to the blockchain locally.
 
-<!--
-Try running some of the following tasks:
-
+### Deploy Smart Rinkeby
 ```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-``` -->
+npx hardhat run scripts/deploy.js --network rinkeby
+```
+This command will deploy the smart contract to the blockchain on Rinkeby.
+
+## Rinkeby Ethereum Test Network
+
+### Links
+  - https://ropsten.etherscan.io/ - Testnet Explorer
+  - https://faucet.ropsten.be/ - Free Ethereum for testing.
+  - https://infura.io/ - Hosted Ethereum node cluster for testing.

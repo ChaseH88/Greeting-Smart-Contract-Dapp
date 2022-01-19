@@ -4,13 +4,19 @@ import { Provider } from "react-redux";
 import { store } from "./state";
 
 import { ethers } from "ethers";
-import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json'
+
+// Smart Contracts
+import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json';
+import Token from './artifacts/contracts/Token.sol/Token.json';
+
+// Types
 import { Ethereum } from "./types/interfaces";
 
 /**
  * Contract Address
  */
-const address: string = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const greeterAddress: string = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const tokenAddress: string = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9';
 
 declare global {
   interface Window {
@@ -23,6 +29,7 @@ const App: FC = () => {
   const [ userInput, setUserInput ] = useState<string>('This is a test');
   const [ greeting, setContractGreeting ] = useState<string | null>(null);
   const [ maskError, setMaskError ] = useState<string | null>(null);
+  const [ userBalance, setUserBalance ] = useState<number | null>(null);
 
   /**
    * Handles the state update for user input.
@@ -41,7 +48,7 @@ const App: FC = () => {
     setMaskError(null);
     if(typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(address, Greeter.abi, provider);
+      const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
 
       try {
         const data = await contract.greet();
@@ -73,7 +80,7 @@ const App: FC = () => {
         await requestAccount();
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(address, Greeter.abi, signer);
+        const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer);
         const transaction = await contract.setGreeting(userInput);
         await transaction.wait();
         fetchGreeting();
@@ -82,6 +89,18 @@ const App: FC = () => {
         const error: any = err;
         setMaskError(error.message)
       }
+    }
+  }
+
+  const getBalance = async () => {
+    if(typeof window.ethereum !== 'undefined') {
+      const [ account ] = await window.ethereum.request({
+        method: 'eth_requestAccounts'
+      });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
+      const balance = await contract.balanceOf(account);
+      setUserBalance(balance.toString());
     }
   }
 
@@ -110,6 +129,16 @@ const App: FC = () => {
         >
           Set Greeting
         </button>
+      </div>
+      <div>
+        <button
+            onClick={getBalance}
+          >
+            Get Balance
+          </button>
+          {userBalance &&
+            <p>User Balance: {userBalance} APCH</p>
+          }
       </div>
       {maskError &&
         <div className="error">

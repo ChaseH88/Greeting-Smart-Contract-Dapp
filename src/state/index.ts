@@ -6,7 +6,7 @@ import AppReducer from "./reducers/app";
 
 // Combine Reducers
 const appReducer = combineReducers({
-  account: AppReducer
+  app: AppReducer
 });
 
 // Root Reducer
